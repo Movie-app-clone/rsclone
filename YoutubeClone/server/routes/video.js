@@ -6,6 +6,7 @@ var ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath('C:/FFmpeg/bin/ffmpeg');
 ffmpeg.setFfprobePath('C:/FFmpeg/bin/ffprobe');
 
+const { Video } = require("../models/Video");
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -67,6 +68,19 @@ router.post("/thumbnail", (req, res) => {
             // %b input basename ( filename w/o extension )
             filename:'thumbnail-%b.png'
         });
+
+});
+
+router.post("/uploadVideo", (req, res) => {
+
+    const video = new Video(req.body)
+
+    video.save((err, video) => {
+        if(err) return res.status(400).json({ success: false, err })
+        return res.status(200).json({
+            success: true 
+        })
+    })
 
 });
 

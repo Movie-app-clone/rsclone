@@ -20,7 +20,8 @@ const Catogory = [
     { value: 0, label: "Sports" },
 ]
 
-function UploadVideoPage() {
+function UploadVideoPage(props) {
+    const user = useSelector(state => state.user)
 
     const [title, setTitle] = useState("");
     const [Description, setDescription] = useState("");
@@ -48,8 +49,39 @@ function UploadVideoPage() {
         setCategory(e.currentTarget.value);
     }
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
 
+        if (user.userData && !user.userData.isAuth) {
+            return alert('Please Log in First')
+        }
+
+        if (title === "" || Description === "" ||
+            Category === "" || FilePath === "" ||
+            Duration === "" || Thumbnail === "") {
+            return alert('Please first fill all the fields')
+        }
+
+        const variables = {
+            writer: user.userData._id,
+            title: title,
+            description: Description,
+            privacy: privacy,
+            filePath: FilePath,
+            category: Category,
+            duration: Duration,
+            thumbnail: Thumbnail
+        }
+
+        axios.post('/api/video/uploadVideo', variables)
+            .then(response => {
+                if (response.data.success) {
+                    alert('video Uploaded Successfully')
+                    props.history.push('/')
+                } else {
+                    alert('Failed to upload video')
+                }
+            })
     }
 
     const onDrop = (files) => {

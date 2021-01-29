@@ -1,68 +1,75 @@
-import React, {useState, useEffect} from 'react'
-import { Card, Avatar, Col, Typography, Row } from 'antd';
-import axios from 'axios';
-import moment from 'moment';
-const { Meta } = Card;
+import React, { useState, useEffect } from 'react'
+import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
+import { Typography, Row } from 'antd';
+import MainImage from './Sections/MainImage';
+import GridCard from './Sections/GridCard'
 const { Title } = Typography;
 
 function LandingPage() {
 
-  const [Videos, setVideos] = useState([])
+  const [Movies, setMovies] = useState([])
+  const [CurrentPage, setCurrentPage] = useState(0)
 
   useEffect(() => {
-    axios.get('/api/video/getVideos')
-      .then(response => {
-        if (response.data.success) {
-          console.log(response.data.videos)
-          setVideos(response.data.videos)
-        } else {
-          alert('Failed to get Videos')
-        }
-      })
+    const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+        fetchMovies(endpoint)
   }, [])
 
-  const renderCards = Videos.map((video, index) => {
+  const fetchMovies = (path) => {
 
-    var minutes = Math.floor(video.duration / 60);
-    var seconds = Math.floor(video.duration - minutes * 60);
+    fetch(path)
+    .then(response => response.json())
+    .then(response => {
+        console.log(response)
+        setMovies([...Movies,  ...response.results]) 
+        setCurrentPage(response.page)
+    })
+}
 
-    return <Col lg={6} md={8} xs={24}>
-      <div style={{ position: 'relative' }}>
-        <a href={`/video/${video._id}`} >
-          <img style={{ width: '100%' }} alt="thumbnail" src={`http://localhost:5000/${video.thumbnail}`} />
-          <div className=" duration"
-            style={{
-              bottom: 0, right: 0, position: 'absolute', margin: '4px',
-              color: '#fff', backgroundColor: 'rgba(17, 17, 17, 0.8)', opacity: 0.8,
-              padding: '2px 4px', borderRadius: '2px', letterSpacing: '0.5px', fontSize: '12px',
-              fontWeight: '500', lineHeight: '12px'
-            }}>
-            <span>{minutes} : {seconds}</span>
-          </div>
-        </a>
-      </div><br />
-      <Meta
-        avatar={
-          <Avatar src={video.writer.image} />
-        }
-        title={video.title}
-      />
-      <span>{video.writer.name} </span><br />
-      <span style={{ marginLeft: '3rem' }}> {video.views}</span>
-        - <span> {moment(video.createdAt).format("MMM Do YY")} </span>
-    </Col>
-
-  })
-
+const handleClick = () => { 
+    const endpoint =  `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+    
+    fetchMovies(endpoint);
+}
 
   return (
-    <div style={{ width: '85%', margin: '3rem auto' }}>
-      <Title level={2} > Recommended </Title>
-      <hr />
+    <div style={{ width: '100%', margin: 0 }}  >
 
-      <Row gutter={16}>
-        {renderCards}
-      </Row>
+
+      {/* Movie Main Image  */}
+      {Movies[0] &&
+        <MainImage image={`${IMAGE_URL}w1280${Movies[0].backdrop_path && Movies[0].backdrop_path}`}
+          title={Movies[0].original_title} text={Movies[0].overview} />
+      }
+
+      {/* Body  */}
+      <div style={{ width: '85%', margin: '1rem auto' }}>
+        <Title level={2} > Movies by latest</Title>
+        <hr />
+
+        {/* Grid Cards */}
+
+        <Row gutter={[16, 16]}>
+          {Movies && Movies.map((movie, index) => (
+            <React.Fragment key={index}>
+              <GridCard
+                image={movie.poster_path && `${IMAGE_URL}w500${movie.poster_path}`}
+                movieId={movie.id}
+              />
+            </React.Fragment>
+          ))}
+
+        </Row>
+
+
+        {/* Load More Button  */}
+        <br />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button onClick={handleClick}> Load More </button>
+        </div>
+
+      </div>
+
     </div>
   )
 }

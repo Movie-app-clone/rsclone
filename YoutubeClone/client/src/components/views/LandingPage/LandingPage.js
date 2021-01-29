@@ -35,19 +35,14 @@ const handleClick = () => {
   return (
     <div style={{ width: '100%', margin: 0 }}  >
 
-
-      {/* Movie Main Image  */}
       {Movies[0] &&
         <MainImage image={`${IMAGE_URL}w1280${Movies[0].backdrop_path && Movies[0].backdrop_path}`}
           title={Movies[0].original_title} text={Movies[0].overview} />
       }
 
-      {/* Body  */}
       <div style={{ width: '85%', margin: '1rem auto' }}>
         <Title level={2} > Movies by latest</Title>
         <hr />
-
-        {/* Grid Cards */}
 
         <Row gutter={[16, 16]}>
           {Movies && Movies.map((movie, index) => (
@@ -61,8 +56,6 @@ const handleClick = () => {
 
         </Row>
 
-
-        {/* Load More Button  */}
         <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button onClick={handleClick}> Load More </button>

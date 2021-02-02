@@ -6,7 +6,7 @@ import { IMAGE_URL } from '../../Config';
 import { Button } from 'antd';
 
 function FavoritePage() {
-
+    
     const variables = { userFrom: localStorage.getItem('userId') }
 
     const [FavoriteMovies, setFavoriteMovies] = useState([])

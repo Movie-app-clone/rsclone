@@ -7,10 +7,10 @@ import { Button } from 'antd';
 const { Title } = Typography;
 
 function LandingPage() {
-
+  
   const [Movies, setMovies] = useState([])
   const [CurrentPage, setCurrentPage] = useState(0)
-
+  
   useEffect(() => {
     const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`
         fetchMovies(endpoint)
@@ -21,7 +21,6 @@ function LandingPage() {
     fetch(path)
     .then(response => response.json())
     .then(response => {
-        console.log(response)
         setMovies([...Movies,  ...response.results]) 
         setCurrentPage(response.page)
     })

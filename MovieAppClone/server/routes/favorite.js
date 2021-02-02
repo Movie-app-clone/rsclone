@@ -32,7 +32,6 @@ router.post("/favorited", auth, (req, res) => {
 
 router.post("/addToFavorite", (req, res) => {
 
-     
     const favorite = new Favorite(req.body)
 
     favorite.save((err, doc) => {
@@ -50,6 +49,17 @@ router.post("/removeFromFavorite", (req, res) => {
             if (err) return res.status(400).json({ success: false, err })
             res.status(200).json({ success: true, doc })
         })
+
+});
+
+router.post("/getFavoriteMovie", (req, res) => {
+
+    Favorite.find({ 'userFrom': req.body.userFrom })
+        .exec((err, fav) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json({ success: true, fav })
+        })
+
 
 });
 

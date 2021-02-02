@@ -14,7 +14,6 @@ function Favorite(props) {
         movieRunTime: props.movieInfo.runtime
     }
 
-
     useEffect(() => {
 
         axios.post('/api/favorite/favoriteNumber', variable)
@@ -68,11 +67,9 @@ function Favorite(props) {
         }
     }
 
-
     return (
         <div>
-            <button onClick={onClickFavorite} >{Favorited ? " remove from Favortie " : " Add to Favorite"}{FavoriteNumber}</button>
-
+            <button onClick={onClickFavorite} >{Favorited ? " remove from Favortie " : " Add to Favorite "}{FavoriteNumber}</button>
         </div>
     )
 }

@@ -1,8 +1,9 @@
-import Axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import './favorite.css'
-import { Popover } from 'antd'
-import { IMAGE_URL } from '../../Config'
+import Axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import './favorite.css';
+import { Popover } from 'antd';
+import { IMAGE_URL } from '../../Config';
+import { Button } from 'antd';
 
 function FavoritePage() {
 
@@ -56,10 +57,10 @@ function FavoritePage() {
 
         return <tr>
             <Popover content={content} title={`${movie.movieTitle}`}>
-                <td>{movie.movieTitle}</td>
+                <td><a href={`/movie/${movie.movieId}`}>{movie.movieTitle}</a></td>
             </Popover>
             <td>{movie.movieRunTime} mins</td>
-            <td><button onClick={() => removeFromFavorites(movie.movieId)}>Remove from the Favorites</button></td>
+            <td><Button onClick={() => removeFromFavorites(movie.movieId)}>Remove from the Favorites</Button></td>
 
         </tr>
     })

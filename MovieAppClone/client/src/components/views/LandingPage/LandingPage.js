@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
 import { Typography, Row } from 'antd';
 import MainImage from './Sections/MainImage';
-import GridCard from './Sections/GridCard'
+import GridCard from './Sections/GridCard';
+import { Button } from 'antd';
 const { Title } = Typography;
 
 function LandingPage() {
@@ -58,7 +59,7 @@ const handleClick = () => {
 
         <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button onClick={handleClick}> Load More </button>
+          <Button onClick={handleClick}> Load More </Button>
         </div>
 
       </div>

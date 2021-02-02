@@ -8,7 +8,7 @@ function Footer() {
             flexDirection: 'column', alignItems: 'center',
             justifyContent: 'center', fontSize:'1rem'
         }}>
-           <p> hiiiiiiiii  <Icon type="smile" /></p>
+           <p> Movie App  <Icon type="smile" /></p>
         </div>
     )
 }
